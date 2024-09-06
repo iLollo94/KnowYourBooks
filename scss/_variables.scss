@@ -1,0 +1,45 @@
+// COLORI
+$backgroundColor: #FFFFFF;
+$cardColor: #fff2dd;
+$mainColor: #EB7043;
+$textColor: #566aa1;
+$hoverBgColor: #ffb69b;
+$hoverTxtColor: #3d5aaa;
+$shadowColor: #2835579c;
+
+// FONTS
+%textFontRegular {
+    font-family: "Gupter", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+%textFontBold {
+    font-family: "Gupter", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+%coursiveFontRegular {
+    font-family: "Dancing Script", cursive;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+%titleFont {
+    font-family: "Merriweather", serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+// Fixed class
+%pageWidth {
+    width: min(100%, 1440px);
+}
+
+%card {
+    background-color: $cardColor;
+    border: 1px solid $mainColor;
+    border-radius: 0 25px;
+}

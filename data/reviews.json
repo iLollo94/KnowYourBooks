@@ -1,0 +1,58 @@
+[
+    {
+        "userName": "Lorenzo",
+        "bookName": "Il Signore degli Aneli",
+        "authorName": "J.R.R. Tolkien",
+        "valutation": "5",
+        "reviewTitle": "Miglior libro fantasy di sempre",
+        "review": "asdasdasdasdasdasdasdasd"
+    },
+    {
+        "userName": "iLollo94",
+        "bookName": "Lo Hobbit",
+        "authorName": "J.R.R. Tolkien",
+        "valutation": "4",
+        "reviewTitle": "Spettacolare!!",
+        "review": "bellissimo ma meno del signore degli anelli"
+    },
+    {
+        "userName": "iLollo94",
+        "bookName": "Lo Hobbit",
+        "authorName": "J.R.R. Tolkien",
+        "valutation": "4",
+        "reviewTitle": "Spettacolare!!",
+        "review": "bellissimo ma meno del signore degli anelli"
+    },
+    {
+        "userName": "iLollo94",
+        "bookName": "Lo Hobbit",
+        "authorName": "J.R.R. Tolkien",
+        "valutation": "4",
+        "reviewTitle": "Spettacolare!!",
+        "review": "bellissimo ma meno del signore degli anelli"
+    },
+    {
+        "userName": "iLollo94",
+        "bookName": "Harry potter",
+        "authorName": "Rowling",
+        "valutation": "4",
+        "reviewTitle": "asdasdasdas!!",
+        "review": "asdasdasdasdasdasdasdasd"
+    },
+    {
+        "userName": "Ciao",
+        "bookName": "Il Trono di Spade",
+        "authorName": "George R.R. Martin",
+        "valutation": "4",
+        "reviewTitle": "Fantastico",
+        "review": "Molto bello, ma lo stile di scrittura di Martin \u00e8 leggermente prolisso"
+    },
+    {
+        "userName": "Virginia",
+        "bookName": "Le Cronache di Narnia",
+        "authorName": "C. S. Lewis",
+        "valutation": "5",
+        "reviewTitle": "Estasiante",
+        "review": "Il testo risulta molto descrittivo e avvincente"
+    }
+]

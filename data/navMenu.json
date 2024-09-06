@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "title": "Home",
+        "name": "Home",
+        "url": "index.php"
+    },
+    {
+        "id": 2,
+        "title": "About Us",
+        "name": "About Us",
+        "url": "index.php#aboutUs"
+    },
+    {
+        "id": 3,
+        "title": "Contatti",
+        "name": "Contatti",
+        "url": "index.php#contatti"
+    },
+    {
+        "id": 4,
+        "title": "Scrivi Recensione",
+        "name": "Scrivi Recensione",
+        "url": "writeReviews.php"
+    },
+    {
+        "id": 5,
+        "title": "Leggi Recensioni",
+        "name": "Leggi Recensioni",
+        "url": "readReviews.php"
+    }
+]
