@@ -1,1 +1,21 @@
 @import 'variables';
+
+div.container {
+    form.searchReviews {
+        @extend %form;
+
+        fieldset {
+            flex-flow: row wrap;
+
+            input {
+                margin-right: 20px;
+            }
+        }
+
+        margin-bottom: 20px;
+    }
+
+    div.review-card {
+        @extend %card;
+    }
+}

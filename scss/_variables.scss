@@ -1,16 +1,17 @@
 // COLORI
 $backgroundColor: #FFFFFF;
-$cardColor: #fff2dd;
-$mainColor: #EB7043;
-$textColor: #566aa1;
+$cardColor: #fff7eb;
+$mainColor: #ff5100;
+$offColor: #95a8d6;
+$textColor: #0f1c3f;
 $hoverBgColor: #ffb69b;
-$hoverTxtColor: #3d5aaa;
+$hoverTxtColor: #1b3680;
 $shadowColor: #2835579c;
 
 // FONTS
 %textFontRegular {
     font-family: "Gupter", serif;
-    font-weight: 400;
+    font-weight: 500;
     font-style: normal;
 }
 
@@ -34,7 +35,10 @@ $shadowColor: #2835579c;
 }
 
 // Fixed class
-%pageWidth {
+%pageContainer {
+    border-left: 1px solid $offColor;
+    border-right: 1px solid $offColor;
+    background-color: $backgroundColor;
     width: min(100%, 1440px);
 }
 
@@ -42,4 +46,121 @@ $shadowColor: #2835579c;
     background-color: $cardColor;
     border: 1px solid $mainColor;
     border-radius: 0 25px;
+    width: min(100%, 800px);
+    margin: 20px auto;
+
+    display: flex;
+    flex-flow: row wrap;
+
+    div.left-col {
+        flex: 0 1 25%;
+        display: flex;
+        flex-flow: column wrap;
+        border-right: 1px solid $offColor;
+        padding: 10px;
+
+        div.user-data {
+            margin-bottom: 10px; 
+        }
+
+        div.book-data {
+            text-align: center;
+            margin: 10px;
+
+            h3 {
+                font-size: 1.2em;
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+    div.right-col {
+        flex: 1 0 75%;
+        display: flex;
+        flex-flow: column wrap;
+        padding: 10px;
+
+        div.review-title {
+            border-bottom: 1px solid $offColor;
+            @extend %coursiveFontRegular;
+            font-size: 30px;
+            width: 100%;
+        }
+
+        div.review-message {
+            padding: 10px 0;
+        }
+
+        div.valutation {
+            width: 100%;
+            text-align: right;
+            margin-top: auto;
+            font-size: 24px;
+        }
+    }
+}
+
+%text {
+    @extend %textFontRegular;
+    text-decoration: none;
+    color: $textColor;
+}
+
+%menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-flow: column;
+}
+
+%form {
+    border: 1px solid $mainColor;
+
+    fieldset {
+        display: flex;
+        flex-flow: column wrap;
+        margin: auto;
+        padding: 20px;
+        border: none;
+        outline: none;
+
+        input,
+        select,
+        textarea {
+            margin-top: 3px;
+            margin-bottom: 8px;
+            padding: 5px;
+            border: 1px solid $mainColor !important;
+            color: $textColor;
+
+            &.error {
+                border: 2px solid red !important;
+            }
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        button {
+            display: block;
+            padding: 5px;
+            background-color: $offColor;
+            border: 2px solid $mainColor;
+            color: $mainColor;
+            font-weight: bold;
+            font-size: 16px;
+            margin-left: auto;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $hoverBgColor;
+                color: $textColor;
+                transition: .2s ease;
+            }
+        }
+    }
 }

@@ -8,7 +8,7 @@ use KnowYourBooks\Utility as UT;
 /**
  * @var string $title Titolo pagina WEB
  */
-$title = 'Know Your Books: Scrivi Recensione';
+$title = 'Know Your Books';
 
 /**
  * @var array $css Link file(s) CSS
@@ -21,22 +21,27 @@ $css = array('./scss/css/style.min.css', './scss/css/homepage.min.css');
 $bioFile = './data/aboutUs.txt';
 
 /**
+ * @var string $bioFile Link file txt messaggio da affiancare a form
+ */
+$messageFile = './data/form-message.txt';
+
+/**
  * @var string $contactFile Link file txt contatti
-*/
+ */
 $contactFile = './data/receivedContacts.txt';
 
 // Validazione FORM
-$inviato = UT::request('submit');
+$inviato = UT::request('inviato');
 $inviato = ($inviato == null) ? false : true;
+$valido = 0;
 
 if ($inviato) {
-    $valido = 0;
     // Richiamo delle variabili da array $_POST
     $fullName = UT::request('fullName');
     $email = UT::request('email');
     $argument = UT::request('argument');
     $messageTitle = UT::request('title');
-    $message = UT::request('message');    
+    $message = UT::request('message');
     $privacy = (UT::request('privacy') == "on") ? true : false;
     // Definizione di classe campo errato
     $clsErrore = 'class="error"';
@@ -132,7 +137,7 @@ if ($inviato) {
 
         <nav>
             <?php
-            echo UT::generateMenu();            
+            echo UT::generateMenu(true);
             ?>
         </nav>
 
@@ -155,35 +160,41 @@ if ($inviato) {
             </section>
 
             <section class="contacts" id="contatti">
+                <h2>Contattaci!</h2>
+                <div class="form-container">
                 <?php
                 if (!$inviato) {
                 ?>
-                <form action="index.php" class="contatti" method="post">
-                    <fieldset>
-                        <legend>Contattaci!</legend>
-                        <label for="fullName">Nome Completo</label>
-                        <input type="text" name="fullName" id="fullName" <?php echo $clsErroreNome; ?> value="<?php echo $fullName; ?>">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" <?php echo $clsErroreEmail; ?> value="<?php echo $email; ?>">
-                        <select name="argument" id="argument" <?php echo $clsErroreArgomento; ?>>
-                            <option value="" <?php echo ($argument == '') ? 'selected' : ''; ?> disabled>-- Seleziona un argomento --</option>
-                            <option value="1" <?php echo ($argument == 1) ? 'selected' : ''; ?>>Informazioni</option>
-                            <option value="2" <?php echo ($argument == 2) ? 'selected' : ''; ?>>Eliminazione recensioni</option>
-                            <option value="3" <?php echo ($argument == 3) ? 'selected' : ''; ?>>Collaborazioni</option>
-                            <option value="4" <?php echo ($argument == 4) ? 'selected' : ''; ?>>Altro</option>
-                        </select>
-                        <label for="title">Oggetto</label>
-                        <input type="text" name="title" id="title" <?php echo $clsErroreTitolo; ?> value="<?php echo $messageTitle; ?>">
-                        <label for="message">Inserisci messaggio</label>
-                        <textarea name="message" id="message" <?php echo $clsErroreMessaggio; ?>><?php echo $message; ?></textarea>
-                        <input type="checkbox" name="privacy" id="privacy">
-                        <label for="privacy">Ho letto ed accetto l'<a href ="#" title="Privacy" <?php echo $clsErrorePrivacy; ?>>Informativa Privacy</a></label>
+                    <form action="?inviato=1" class="contatti" method="post">
+                        <fieldset>
+                            <label for="fullName">Nome Completo</label>
+                            <input type="text" name="fullName" id="fullName" <?php echo $clsErroreNome; ?> value="<?php echo $fullName; ?>">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" <?php echo $clsErroreEmail; ?> value="<?php echo $email; ?>">
+                            <label for="argument">Argomento</label>
+                            <select name="argument" id="argument" <?php echo $clsErroreArgomento; ?>>
+                                <option value="" <?php echo ($argument == '') ? 'selected' : ''; ?> disabled>-- Seleziona un argomento --</option>
+                                <option value="1" <?php echo ($argument == 1) ? 'selected' : ''; ?>>Informazioni</option>
+                                <option value="2" <?php echo ($argument == 2) ? 'selected' : ''; ?>>Eliminazione recensioni</option>
+                                <option value="3" <?php echo ($argument == 3) ? 'selected' : ''; ?>>Collaborazioni</option>
+                                <option value="4" <?php echo ($argument == 4) ? 'selected' : ''; ?>>Altro</option>
+                            </select>
+                            <label for="title">Oggetto</label>
+                            <input type="text" name="title" id="title" <?php echo $clsErroreTitolo; ?> value="<?php echo $messageTitle; ?>">
+                            <label for="message">Inserisci messaggio</label>
+                            <textarea name="message" id="message" <?php echo $clsErroreMessaggio; ?>><?php echo $message; ?></textarea>
+                            <div id="privacy-box">
+                                <input type="checkbox" name="privacy" id="privacy">
+                                <label for="privacy">Ho letto ed accetto l'<a href="#" title="Privacy" <?php echo $clsErrorePrivacy; ?>>Informativa Privacy</a></label>
+                            </div>
 
-                        <div class="buttons">
-                            <input type="submit" name="submit" id="submit" value="Invia messaggio">
-                        </div>
-                    </fieldset>
-                </form>
+                            <div class="buttons">
+                                <button type="submit" name="submit" id="submit">Invia messaggio</button>
+                            </div>
+
+                            <?php echo ($valido != 0) ? '<p style="color:red;">Compilare correttamente tutti i campi' : '' ?>
+                        </fieldset>
+                    </form>
 
                 <?php
                 } else {
@@ -198,14 +209,14 @@ if ($inviato) {
                     }
 
                     $str = "<strong>Nome:</strong> %s<br>" .
-                            "<strong>Email:</strong> %s<br>" .
-                            "<strong>Argomento:</strong> %s<br>" .
-                            "<strong>Titolo:</strong> %s<br>" .
-                            "<strong>Messaggio:</strong> %s<br>";
-                    
+                        "<strong>Email:</strong> %s<br>" .
+                        "<strong>Argomento:</strong> %s<br>" .
+                        "<strong>Titolo:</strong> %s<br>" .
+                        "<strong>Messaggio:</strong> %s<br>";
+
                     $str = sprintf($str, $fullName, $email, $argument, $messageTitle, $message);
 
-                    echo ("<h2>Grazie per averci contattato</h2> Ecco il riepilogo del tuo messaggio: <br>" . $str);
+                    echo ("<div class=\"result-message\"><h2>Grazie per averci contattato</h2> Ecco il riepilogo del tuo messaggio: <br>" . $str);
 
                     $str = str_replace("<br>", chr(10), $str);
                     $str = str_replace("<strong>", "", $str);
@@ -220,8 +231,22 @@ if ($inviato) {
                     } else {
                         echo "<br>" . str_repeat("-", 30) . "<br>Errore nell'invio del modulo";
                     }
+
+                    echo '</div>';
                 }
                 ?>
+                </div>
+
+                <section class="contacts-message">
+                    <div class="message">
+                        <p>
+                            <?php
+                            $bio = nl2br(file_get_contents($messageFile));
+                            echo $bio;
+                            ?>
+                        </p>
+                    </div>
+                </section>
             </section>
         </main>
 

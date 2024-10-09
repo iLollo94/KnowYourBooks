@@ -1,4 +1,5 @@
 <?php
+
 namespace KnowYourBooks;
 
 /**
@@ -9,8 +10,9 @@ namespace KnowYourBooks;
  * @author Lorenzo Marini
  * @license GPL
  * @copyright 2024, Lorenzo Marini
-*/
-class Utility {
+ */
+class Utility
+{
     /**
      * generateHead()
      * 
@@ -19,8 +21,9 @@ class Utility {
      * @param string $title Titolo sito web
      * @param string|array $css Link a file css
      * @return string
-    */
-    public static function generateHead ($title, $css) {
+     */
+    public static function generateHead($title, $css)
+    {
         $str = '';
         $str .= '<meta charset="UTF-8">';
         $str .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
@@ -51,8 +54,9 @@ class Utility {
      * generateHeader()
      * 
      * Genera stringa HTML <header>
-    */
-    public static function generateHeader () {
+     */
+    public static function generateHeader()
+    {
         $str = '';
         $str .= '<div class="logo">';
         $str .= '<img src="./img/logo-no-background.png" alt="Know Your Books Logo" title="Know Your Books">';
@@ -66,15 +70,24 @@ class Utility {
      * generateMenu()
      * 
      * Genera stringa HTML <nav>
-    */
-    public static function generateMenu () {
+     * 
+     * @param bool $hamburger Seleziona se stampare menu di tipo hamburger o normale
+     */
+    public static function generateMenu($hamburger = false)
+    {
         $data = './data/navMenu.json';
         $menuData = json_decode(file_get_contents($data));
-        $str = '<ul class="menu">';
+        $str = '';
+        if ($hamburger) {
+            $str .= '<div class="hamburger-menu">';
+            $str .= '<input type="checkbox" title="controllo" id="controllo"><label for ="controllo" class="label-controllo"><span></span></label>';
+        }
+        $str .= '<ul class="menu">';
         foreach ($menuData as $link) {
             $str .= sprintf('<li><a href="%s" title="%s">%s</a></li>', $link->url, $link->title, $link->name);
         }
-        $str .= '</ul>';
+        $str .= ($hamburger) ? '</ul></div>' : '</ul>';
+
 
         return $str;
     }
@@ -84,18 +97,22 @@ class Utility {
      * generateFooter()
      * 
      * Genera stringa HTML <footer>
-    */
-    public static function generateFooter () {
-        $str = '<div class="right-col">';
-        $str .= self::generateMenu();
-        $str .= '</div>';
-
-        $str .= '<div class="center-col">';
+     */
+    public static function generateFooter()
+    {
+        $str = '';
+        $str .= '<div class="left-col">';
         $str .= '<h3>Contatti:</h3>';
         $str .= '<address>Email: <a href ="mailto: info@kyb.io" title="Email">info@kyb.io</a><br>Phone: +9 338xxxxxxx</address>';
         $str .= '</div>';
 
-        $str .= '<div class="left-col">';
+        $str .= '<div class="center-col">';
+        $str .= '<h3>Menu:</h3>';
+        $str .= self::generateMenu();
+        $str .= '</div>';
+
+        $str .= '<div class="rigth-col">';
+        $str .= '<h3>Info:</h3>';
         $str .= '<a href ="#" title="Privacy">Informativa Privacy</a>';
         $str .= '<a href ="#" title="Termini">Termini e condizioni</a>';
         $str .= '</div>';
@@ -111,8 +128,9 @@ class Utility {
      * 
      * @param string $str chiave richiesta HTTP
      * @return string|null
-    */
-    public static function request ($str) {
+     */
+    public static function request($str)
+    {
         $rit = null;
         if ($str !== null) {
             if (isset($_POST[$str])) {
@@ -132,8 +150,9 @@ class Utility {
      * @param int -- $min Valore di lunghezza minimo
      * @param int -- $max Valore di lunghezza massimo
      * @return bool
-    */
-    public static function ctrlLunghezzaStringa ($str, $min = null, $max = null) {
+     */
+    public static function ctrlLunghezzaStringa($str, $min = null, $max = null)
+    {
         $rit = 0;
         $n = strlen($str);
 
@@ -141,7 +160,7 @@ class Utility {
             $rit++;
         }
 
-        if ($max =! null && $n > $max) {
+        if ($max = ! null && $n > $max) {
             $rit++;
         }
 
@@ -156,26 +175,33 @@ class Utility {
      * @param array|object $reviewData Dati recensione
      * @param bool $fromJson Imposta provenienza array da JSON (con array di StdClassObj) oppure da compilazione PHP (array semplice)
      * @return string
-    */
-    public static function printReviewCard($reviewData, $fromJson = false) {
+     */
+    public static function printReviewCard($reviewData, $fromJson = false)
+    {
         if (!$fromJson) {
             $str = '<div class="review-card">';
+            $str .= '<div class="left-col">';
             $str .= sprintf('<div class="user-data"><p>%s</p></div>', $reviewData['userName']);
             $str .= sprintf('<div class="book-data"><h3>%s</h3><h4>%s</h4></div>', $reviewData['bookName'], $reviewData['authorName']);
-            $str .= '<div class="review">';
-            $str .= sprintf('<div class="review-title"><blockquote>%s</blockquote></div>', $reviewData['reviewTitle']);
-            $str .= sprintf('<div class="valutation"><p>Valutazione: %u/5</p></div>', $reviewData['valutation']);
+            $str .= '</div><div class="right-col">';
+            $str .= sprintf('<div class="review-title"><p>%s</p></div>', $reviewData['reviewTitle']);
             $str .= sprintf('<div class="review-message"><p>%s</p></div>', $reviewData['review']);
+            $cont = 5 - $reviewData['valutation']; // Contatore per stampare stelle vuote
+            $stars = str_repeat("&#9733;", $reviewData['valutation']) . str_repeat("&#9734;", $cont);
+            $str .= sprintf('<div class="valutation"><p><span class="stars">%s</span></p></div>', $stars);
             $str .= '</div></div>';
         } else {
             $str = '<div class="review-card">';
+            $str .= '<div class="left-col">';
             $str .= sprintf('<div class="user-data"><p>%s</p></div>', $reviewData->userName);
             $str .= sprintf('<div class="book-data"><h3>%s</h3><h4>%s</h4></div>', $reviewData->bookName, $reviewData->authorName);
-            $str .= '<div class="review">';
-            $str .= sprintf('<div class="review-title"><blockquote>%s</blockquote></div>', $reviewData->reviewTitle);
-            $str .= sprintf('<div class="valutation"><p>Valutazione: %u/5</p></div>', $reviewData->valutation);
+            $str .= '</div><div class="right-col">';
+            $str .= sprintf('<div class="review-title"><p>%s</p></div>', $reviewData->reviewTitle);
             $str .= sprintf('<div class="review-message"><p>%s</p></div>', $reviewData->review);
-            $str .= '</div></div>';
+            $cont = 5 - $reviewData->valutation; // Contatore per stampare stelle vuote
+            $stars = str_repeat("&#9733;", $reviewData->valutation) . str_repeat("&#9734;", $cont);
+            $str .= sprintf('<div class="valutation"><p><span class="stars">%s</span></p></div>', $stars);
+            $str .= '</div></div>';            
         }
 
         return $str;
@@ -194,8 +220,9 @@ class Utility {
      * @param bool -- $commenta Scrive a video se l'operazione è andata a buon fine
      * @return bool
      * 
-    */
-    public static function fileInsert($file, $text, $commenta = false) {
+     */
+    public static function fileInsert($file, $text, $commenta = false)
+    {
         $rit = false;
         if (!$fp = fopen($file, 'a')) {
             echo "Errore di comunicazione con il server<br>";

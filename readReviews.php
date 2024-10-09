@@ -21,7 +21,7 @@ $css = array('./scss/css/style.min.css', './scss/css/readReviews.min.css');
 $reviews = './data/reviews.json';
 
 // Controllo invio modulo e validazione dati
-$inviato = UT::request('submit');
+$inviato = UT::request('inviato');
 $inviato = ($inviato == null) ? false : true;
 $validation = 0;
 
@@ -34,7 +34,7 @@ if ($inviato && isset($_POST)) {
     $clsErrore = 'class="error"';
 
     // Validazione bookName
-    if (UT::ctrlLunghezzaStringa($bookName, 2, 64)) {
+    if (UT::ctrlLunghezzaStringa($bookName, 0, 64)) {
         $clsErroreBook = '';
     } else {
         $bookName = '';
@@ -43,7 +43,7 @@ if ($inviato && isset($_POST)) {
     }
 
     // Validazione authorName
-    if (UT::ctrlLunghezzaStringa($authorName, 2, 64)) {
+    if (UT::ctrlLunghezzaStringa($authorName, 0, 64)) {
         $clsErroreAuthor = '';
     } else {
         $authorName = '';
@@ -80,23 +80,22 @@ if ($inviato && isset($_POST)) {
 
         <nav>
             <?php
-            echo UT::generateMenu();
+            echo UT::generateMenu(true);
             ?>
         </nav>
 
         <main>
             <div class="container">
+                <h2>Ricerca recensioni:</h2>
                 <?php
                 if (!$inviato) {
                 ?>
-                    <form action="readReviews.php" class="writeReviews" method="get">
+                    <form action="?inviato=1" class="searchReviews" method="get">
                         <fieldset>
-                            <legend>Ricerca Recensioni:</legend>
                             <input type="text" name="bookName" id="bookName" placeholder="Libro" <?php echo $clsErroreBook; ?> value="<?php echo $bookName ?>">
                             <input type="text" name="authorName" id="authorName" placeholder="Autore" <?php echo $clsErroreAuthor ?> value="<?php echo $authorName ?>">
                             <div class="buttons">
-                                <input type="submit" name="submit" id="submit" value="Invia">
-                                <input type="reset" name="reset" id="reset" value="Cancella">
+                                <button type="submit" name="inviato" id="submit" value="1">Invia</button>
                             </div>
                         </fieldset>
                     </form>
@@ -104,20 +103,24 @@ if ($inviato && isset($_POST)) {
                     // Stampa di tutte le recensioni
                     // Estrapolo array dal file JSON e aggiungo la recensione
                     $reviewsArray = (array)json_decode(file_get_contents($reviews), true);
-
-                    foreach ($reviewsArray as $review) {
-                        echo UT::printReviewCard($review);
+                    
+                    if (count($reviewsArray) > 10) {
+                        for ($i = 0; $i < 10; $i++) {
+                            echo UT::printReviewCard($reviewsArray[$i]);
+                        }
+                    } else {
+                        foreach ($reviewsArray as $review) {
+                            echo UT::printReviewCard($review);
+                        }
                     }
                 } else {
                     ?>
-                    <form action="readReviews.php" class="writeReviews" method="get">
+                    <form action="?inviato=1" class="searchReviews" method="get">
                         <fieldset>
-                            <legend>Ricerca Recensioni:</legend>
                             <input type="text" name="bookName" id="bookName" placeholder="Libro" <?php echo $clsErroreBook; ?> value="<?php echo $bookName ?>">
                             <input type="text" name="authorName" id="authorName" placeholder="Autore" <?php echo $clsErroreAuthor ?> value="<?php echo $authorName ?>">
                             <div class="buttons">
-                                <input type="submit" name="submit" id="submit" value="Invia">
-                                <input type="reset" name="reset" id="reset" value="Cancella">
+                                <button type="submit" name="submit" id="submit" value="1">Invia</button>
                             </div>
                         </fieldset>
                     </form>
@@ -147,14 +150,22 @@ if ($inviato && isset($_POST)) {
                                 $found++;
                                 $searchStr .= UT::printReviewCard($review);
                             }
-                        } else {
-                            echo '<h3>Errore di ricerca</h3>';
                         }
                     }
 
                     // Se sono stati trovati risultati, li stampa
                     if ($found == 0) {
                         echo '<h3>Nessun risultato trovato</h3>';
+
+                        if (count($reviewsArray) > 10) {
+                            for ($i = 0; $i < 10; $i++) {
+                                echo UT::printReviewCard($reviewsArray[$i]);
+                            }
+                        } else {
+                            foreach ($reviewsArray as $review) {
+                                echo UT::printReviewCard($review);
+                            }
+                        }
                     } else {
                         echo $searchStr;
                     }

@@ -1,1 +1,27 @@
 @import 'variables';
+
+div.container {
+    margin-bottom: 40px;
+
+    &>h2,
+    &>h3 {
+        text-align: center;
+        margin: 20px;
+    }
+
+    form.writeReviews {
+        @extend %form;
+        width: min(100%, 500px);
+        margin: auto;
+
+        div.valutation {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+        }
+    }
+
+    div.review-card {
+        @extend %card;
+    }
+}
